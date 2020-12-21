@@ -26,3 +26,6 @@ target/
 .classpath
 .factorypath
 .project
+
+# Log file
+successful_payments.log

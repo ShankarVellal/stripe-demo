@@ -4,6 +4,7 @@ import (
   "encoding/json"
   "fmt"
   "io/ioutil"
+  "log"
   "net/http"
   "os"
   "strconv"
@@ -18,6 +19,13 @@ type CheckoutData struct {
 
 func main() {
   stripe.Key = "sk_test_51HyURQAgpXBKSE2oh2iOeS0hBsMuo3GHgTaqT5PtAy40AYd6DNt1psFlLWcnPMDAEYzZOULWGPjmVrqW1XcUxx8B00xxjF4LMm"
+
+  f, err := os.OpenFile("successful_payments.log",os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+  if err != nil {
+    log.Println(err)
+  }
+  defer f.Close()
+  logger := log.New(f, "payment_successful: ", log.LstdFlags)
 
   http.HandleFunc("/secret", func(w http.ResponseWriter, r *http.Request) {
   	params := &stripe.PaymentIntentParams{
@@ -83,7 +91,7 @@ func main() {
             w.WriteHeader(http.StatusBadRequest)
             return
         }
-        fmt.Println("Charge succeeded! Customer:" + charge.BillingDetails.Name + 
+        logMsg := "Charge succeeded! Customer:" + charge.BillingDetails.Name + 
           "; Email:" + charge.BillingDetails.Email + 
           "; Address:" + charge.BillingDetails.Address.Line1 + ", " +
           charge.BillingDetails.Address.Line2 + ", " +
@@ -91,7 +99,10 @@ func main() {
           charge.BillingDetails.Address.State + ", " +
           charge.BillingDetails.Address.PostalCode + ", " +
           charge.BillingDetails.Address.Country + 
-          "; Phone:" + charge.BillingDetails.Phone)
+          "; Phone:" + charge.BillingDetails.Phone
+
+        fmt.Println(logMsg)
+        logger.Println(logMsg)
     // ... handle other event types
     default:
         fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
