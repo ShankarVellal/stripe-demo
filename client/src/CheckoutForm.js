@@ -68,6 +68,18 @@ export default function CheckoutForm() {
             <a href="http://localhost:3000">Make another payment</a>
           </div>
         }
+        {!clientSecret && 
+          <div>
+            <label>Error: Please ensure the server is running and </label>
+            <a href="http://localhost:3000">try again.</a>
+          </div>
+        }
+        {!stripe && 
+          <div>
+            <label>There was an error setting up Stripe. Please </label>
+            <a href="http://localhost:3000">try again.</a>
+          </div>
+        }
         <button disabled={processing || !clientSecret || !stripe}>
           {processing ? "Processing…" : "Pay"}
         </button>
