@@ -5,13 +5,13 @@ This is a demo of integrating Stripe Payments using a custom payment flow (vs. p
 ### Instructions
 
 - Start the server first using:
-- ```bash
+```bash
 cd server
 go run main.go
 ```
 
 - Start the  client using:
-- ```bash
+```bash
 cd client
 npm start
 ```
