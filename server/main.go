@@ -6,6 +6,7 @@ import (
   "io/ioutil"
   "net/http"
   "os"
+  "strconv"
 
   stripe "github.com/stripe/stripe-go/v72"
   "github.com/stripe/stripe-go/v72/paymentintent"
@@ -64,7 +65,7 @@ func main() {
             w.WriteHeader(http.StatusBadRequest)
             return
         }
-        fmt.Println("PaymentIntent was successful!")
+        fmt.Println("PaymentIntent was successful! Amount: " + strconv.FormatInt(paymentIntent.Amount, 10))
     case "payment_method.attached":
         var paymentMethod stripe.PaymentMethod
         err := json.Unmarshal(event.Data.Raw, &paymentMethod)
@@ -74,6 +75,15 @@ func main() {
             return
         }
         fmt.Println("PaymentMethod was attached to a Customer!")
+    case "charge.succeeded":
+        var charge stripe.Charge
+        err := json.Unmarshal(event.Data.Raw, &charge)
+        if err != nil {
+            fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+            w.WriteHeader(http.StatusBadRequest)
+            return
+        }
+        fmt.Println("Charge succeeded! Customer:" + charge.BillingDetails.Name)
     // ... handle other event types
     default:
         fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)
