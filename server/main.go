@@ -83,7 +83,15 @@ func main() {
             w.WriteHeader(http.StatusBadRequest)
             return
         }
-        fmt.Println("Charge succeeded! Customer:" + charge.BillingDetails.Name)
+        fmt.Println("Charge succeeded! Customer:" + charge.BillingDetails.Name + 
+          "; Email:" + charge.BillingDetails.Email + 
+          "; Address:" + charge.BillingDetails.Address.Line1 + ", " +
+          charge.BillingDetails.Address.Line2 + ", " +
+          charge.BillingDetails.Address.City + ", " +
+          charge.BillingDetails.Address.State + ", " +
+          charge.BillingDetails.Address.PostalCode + ", " +
+          charge.BillingDetails.Address.Country + 
+          "; Phone:" + charge.BillingDetails.Phone)
     // ... handle other event types
     default:
         fmt.Fprintf(os.Stderr, "Unhandled event type: %s\n", event.Type)

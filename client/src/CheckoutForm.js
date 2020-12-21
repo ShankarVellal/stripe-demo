@@ -35,7 +35,16 @@ export default function CheckoutForm() {
       payment_method: {
         card: elements.getElement(CardElement),
         billing_details: {
-          name: 'Jenny Rosen',
+          name: event.target.name.value,
+          email: event.target.email.value,
+          address: {
+            line1: event.target.line1.value,
+            line2: event.target.line2.value,
+            city: event.target.city.value,
+            state: event.target.state.value,
+            country: event.target.country.value,
+          },
+          phone: event.target.phone.value,
         },
       }
     });
@@ -61,6 +70,75 @@ export default function CheckoutForm() {
   const renderForm = () => {
     return(
       <form onSubmit={handleSubmit}>
+        <div>
+            <input
+            type="text"
+            id="name"
+            name="name"
+            placeholder="Name"
+            autoComplete="cardholder"
+            required
+          />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email ID"
+            autoComplete="email"
+            required
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            id="line1"
+            name="line1"
+            placeholder="Address Line 1"
+            autoComplete="address-line1"
+            required
+          />
+          <input
+            type="text"
+            id="line2"
+            name="line2"
+            placeholder="Address Line 2"
+            autoComplete="address-line2"
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            id="city"
+            name="city"
+            placeholder="City"
+            autoComplete="address-level2"
+            required
+          />
+          <input
+            type="text"
+            id="state"
+            name="state"
+            placeholder="State"
+            autoComplete="address-level1"
+          />
+        </div>
+        <div>
+          <input
+            type="text"
+            id="country"
+            name="country"
+            placeholder="Country e.g. US"
+            autoComplete="country"
+          />
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Phone Number"
+            autoComplete="tel"
+            required
+          />
+        </div>
         <CardSection />
         {error && 
           <div>
