@@ -1,6 +1,7 @@
 .env
 .DS_Store
 .vscode
+.eslintcache
 
 # Dependencies
 node_modules
