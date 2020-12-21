@@ -7,6 +7,7 @@ export default function CheckoutForm() {
   const [clientSecret, setClientSecret] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [succeeded, setSucceeded] = useState(false);
+  const [error, setError] = useState(null);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -41,6 +42,7 @@ export default function CheckoutForm() {
 
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
+      setError(`Payment failed: ${result.error.message}`);
       console.log(result.error.message);
     } else {
       // The payment has been processed!
@@ -60,7 +62,15 @@ export default function CheckoutForm() {
     return(
       <form onSubmit={handleSubmit}>
         <CardSection />
-        <button disabled={processing || !clientSecret || !stripe}>Confirm order</button>
+        {error && 
+          <div>
+            {error}
+            <a href="http://localhost:3000">Make another payment</a>
+          </div>
+        }
+        <button disabled={processing || !clientSecret || !stripe}>
+          {processing ? "Processing…" : "Pay"}
+        </button>
       </form>
     );
   };
