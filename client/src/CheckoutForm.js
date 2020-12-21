@@ -69,6 +69,7 @@ export default function CheckoutForm() {
     return (
       <div>
         <h1>Your test payment succeeded</h1>
+        <a href="http://localhost:3000">Make another payment</a>
       </div>
     );
   };
