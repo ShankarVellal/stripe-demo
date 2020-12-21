@@ -17,3 +17,5 @@ npm start
 ```
 
 - Note that this uses test keys, so only the test cards on [Stripe Payments Testing](https://stripe.com/docs/testing) page will work.
+
+- Successful payments are logged in ```successful_payments.log``` file in the ```server``` folder
