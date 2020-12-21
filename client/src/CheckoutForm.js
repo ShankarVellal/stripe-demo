@@ -6,6 +6,7 @@ import CardSection from './CardSection';
 export default function CheckoutForm() {
   const [clientSecret, setClientSecret] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
   const stripe = useStripe();
   const elements = useElements();
 
@@ -49,15 +50,32 @@ export default function CheckoutForm() {
         // execution. Set up a webhook or plugin to listen for the
         // payment_intent.succeeded event that handles any business critical
         // post-payment actions.
+        setSucceeded(true);
         console.log("payment succeeded");
       }
     }
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <CardSection />
-      <button disabled={processing || !clientSecret || !stripe}>Confirm order</button>
-    </form>
-  );
+  const renderForm = () => {
+    return(
+      <form onSubmit={handleSubmit}>
+        <CardSection />
+        <button disabled={processing || !clientSecret || !stripe}>Confirm order</button>
+      </form>
+    );
+  };
+
+  const renderSuccess = () => {
+    return (
+      <div>
+        <h1>Your test payment succeeded</h1>
+      </div>
+    );
+  };
+
+  if (succeeded) {
+    return renderSuccess();
+  } else {
+    return renderForm();
+  }
 }
