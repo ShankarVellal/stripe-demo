@@ -18,7 +18,14 @@ type CheckoutData struct {
 }
 
 func main() {
-  stripe.Key = "sk_test_51HyURQAgpXBKSE2oh2iOeS0hBsMuo3GHgTaqT5PtAy40AYd6DNt1psFlLWcnPMDAEYzZOULWGPjmVrqW1XcUxx8B00xxjF4LMm"
+  //stripe.Key = "sk_test_51HyURQAgpXBKSE2oh2iOeS0hBsMuo3GHgTaqT5PtAy40AYd6DNt1psFlLWcnPMDAEYzZOULWGPjmVrqW1XcUxx8B00xxjF4LMm"
+  secretKey, keyPresent := os.LookupEnv("STRIPE_SECRET_KEY")
+  if !keyPresent {
+    fmt.Fprintf(os.Stderr, "ERROR: Please set STRIPE_SECRET_KEY environment variable.\n")
+    return
+  }
+  
+  stripe.Key = secretKey
 
   f, err := os.OpenFile("successful_payments.log",os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
   if err != nil {
